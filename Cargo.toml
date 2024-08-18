@@ -3,5 +3,11 @@ name = "lyuma"
 version = "0.1.0"
 edition = "2021"
 
+#[lib]
+#crate-type = ["bin", "cdylib"]
+
+[profile.release]
+icon = "icon_play.ico"
+
 [dependencies]
 iced = { version = "0.12.1", features = ["tokio", "image"]}
