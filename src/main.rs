@@ -4,8 +4,11 @@ use iced::{Application, Command, Element, Length, Settings, Theme};
 
 mod menu;
 use menu::Screen;
+mod logger;
+use logger::{Loggable, log_info};
 
 pub fn main() -> iced::Result {
+    logger::init_logger();
     Lyuma::run(Settings::default())
 }
 
@@ -36,6 +39,7 @@ impl Application for Lyuma {
         match message {
             Message::MenuClicked(screen) => {
                 self.screen = screen;
+                log_info(&format!("Menu clicked: {:?}", self.screen));
             }
         }
         Command::none()

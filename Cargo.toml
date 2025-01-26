@@ -11,3 +11,5 @@ icon = "icon_play.ico"
 
 [dependencies]
 iced = { version = "0.12.1", features = ["tokio", "image"]}
+log = "0.4"
+flexi_logger = "0.29"

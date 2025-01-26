@@ -1,6 +1,7 @@
 use iced::widget::{button, column};
 use iced::Element;
 
+// 메뉴에 표시할 화면들을 정의
 #[derive(Debug, Clone)]
 pub enum Screen {
     Home,
