@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use iced::executor;
 use iced::widget::{container, row, text};
 use iced::{Application, Command, Element, Length, Settings, Theme};
@@ -7,7 +9,11 @@ use menu::Screen;
 mod logger;
 use logger::{Loggable, log_info};
 
+use std::env;
+
 pub fn main() -> iced::Result {
+    env::set_var("RUSTFLAGS", "-C target-feature=+crt-static");
+
     logger::init_logger();
     Lyuma::run(Settings::default())
 }
