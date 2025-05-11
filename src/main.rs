@@ -9,6 +9,9 @@ use menu::Screen;
 mod logger;
 use logger::{Loggable, log_info};
 
+mod window;
+use window::home::{Home, Message as HomeMessage};
+
 use std::env;
 
 pub fn main() -> iced::Result {
@@ -20,11 +23,13 @@ pub fn main() -> iced::Result {
 
 struct Lyuma {
     screen: Screen,
+    home: Home
 }
 
 #[derive(Debug, Clone)]
 enum Message {
     MenuClicked(Screen),
+    HomeMessage(HomeMessage),
 }
 
 impl Application for Lyuma {
@@ -34,7 +39,13 @@ impl Application for Lyuma {
     type Theme = Theme;
 
     fn new(_flags: ()) -> (Lyuma, Command<Self::Message>) {
-        (Lyuma { screen: Screen::Home }, Command::none())
+        (
+            Lyuma {
+                screen: Screen::Home,
+                home: Home::new(),
+            },
+            Command::none()
+        )
     }
 
     fn title(&self) -> String {
@@ -47,6 +58,9 @@ impl Application for Lyuma {
                 self.screen = screen;
                 log_info(&format!("Menu clicked: {:?}", self.screen));
             }
+            Message::HomeMessage(home_message) => {
+                self.home.update(home_message);
+            }
         }
         Command::none()
     }
@@ -56,7 +70,7 @@ impl Application for Lyuma {
         let menu = menu::view(menu_items);
 
         let content: Element<_> = match self.screen {
-            Screen::Home => text("This is the Home screen").into(),
+            Screen::Home => self.home.view().map(Message::HomeMessage),
             Screen::Settings => text("This is the Settings screen").into(),
             Screen::About => text("This is the About screen").into(),
             Screen::Profile => text("This is the Profile screen").into(),
